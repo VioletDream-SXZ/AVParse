@@ -213,7 +213,7 @@ bool x264_analysis_t::h264_decode_sps(uint8_t * buf, uint32_t nLen, GY::x264_SPS
 
 void x264_analysis_t::displayUint(uint8_t _val)
 {
-	printf("%d ", (unsigned int)_val);
+  printf("%d ", (unsigned int)_val);
 }
 
 void x264_analysis_t::displayUint(uint32_t _val)
