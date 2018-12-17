@@ -23,10 +23,7 @@ int main()
   
   x264_analysis_t::h264_decode_sps(buff, len, &sps_value);
   
-  cout << sps_value.getWidth() << " " << sps_value.getHeight() << endl;
-  cout << sps_value.getFps() << endl;
-  cout << sps_value.getMaxFrameNum() << endl;
-  cout << sps_value.getNumberRefFrames() << endl;
+  sps_value.display();
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
