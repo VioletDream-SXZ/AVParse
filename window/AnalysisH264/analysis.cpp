@@ -103,7 +103,10 @@ bool x264_analysis_t::h264_decode_sps(uint8_t * buf, uint32_t nLen, GY::x264_SPS
     sps_data->seq_parameter_set_id      = Ue(buf, nLen, startBit);
     
     if(sps_data->profile_idc == 100 || sps_data->profile_idc == 110 ||
-       sps_data->profile_idc == 122 || sps_data->profile_idc == 144)
+       sps_data->profile_idc == 122 || sps_data->profile_idc == 244 ||
+       sps_data->profile_idc == 44  || sps_data->profile_idc == 83  ||
+       sps_data->profile_idc == 86  || sps_data->profile_idc == 118 ||  
+       sps_data->profile_idc ==128)
     {
       sps_data->chroma_format_idc=Ue(buf, nLen, startBit);
       if( sps_data->chroma_format_idc == 3 )
