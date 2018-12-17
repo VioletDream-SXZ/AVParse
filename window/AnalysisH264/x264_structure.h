@@ -165,6 +165,8 @@ typedef struct x264_SPS_t
   int getMaxFrameNum();
   
   int getNumberRefFrames();
+  
+  void display();
 }x264_SPS_t;
 
 }
