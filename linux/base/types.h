@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef GY_TYPES_H
 #define GY_TYPES_H
 

@@ -1,6 +1,6 @@
 ﻿#include <iostream>
-#include "analysis.h"
-#include "x264_structure.h"
+#include "../base/analysis.h"
+#include "../base/x264_structure.h"
 
 using namespace std;
 
