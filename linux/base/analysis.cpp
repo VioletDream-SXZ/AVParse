@@ -215,7 +215,7 @@ bool x264_analysis_t::h264_decode_sps(uint8_t * buf, uint32_t nLen, GY::x264_SPS
 
 void x264_analysis_t::displayUint(uint8_t _val)
 {
-	printf("%d ", (unsigned int)_val);
+  printf("%d ", (unsigned int)_val);
 }
 
 void x264_analysis_t::displayUint(uint32_t _val)
@@ -226,4 +226,52 @@ void x264_analysis_t::displayUint(uint32_t _val)
 void x264_analysis_t::displayUint(uint64_t _val)
 {
   printf("%lld ", (unsigned long long)_val);
+}
+
+bool x264_tools_t::isStartCode3(FILE* fp, uint64_t offset)
+{
+  static char buf[4];
+  
+  if(fp == NULL || offset < 0)
+    return false;
+  
+  int res = fseek(fp, offset, SEEK_SET);
+  if(res < 0)
+    return false;
+  
+  res = fread(buf, 1, 3, fp);
+  if(res < 3)
+  {
+    fseek(fp, offset, SEEK_SET);
+    return false;
+  }
+  
+  if(buf[0] != 0 || buf[1] != 0 || buf[2] != 1)
+    return false;
+  else
+    return true;
+}
+
+bool x264_tools_t::isStartCode4(FILE* fp, uint64_t offset)
+{
+  static char buf[5];
+  
+  if(fp == NULL || offset < 0)
+    return false;
+  
+  int res = fseek(fp, offset, SEEK_SET);
+  if(res < 0)
+    return false;
+  
+  res = fread(buf, 1, 4, fp);
+  if(res < 4)
+  {
+    fseek(fp, offset, SEEK_SET);
+    return false;
+  }
+  
+  if(buf[0] != 0 || buf[1] != 0 || buf[2] != 0 || buf[3] != 1)
+    return false;
+  else
+    return true;
 }
