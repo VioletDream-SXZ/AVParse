@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+namespace GY
+{
+
 #define Free(x) \
     if(x != NULL) \
       free(x);    \
@@ -13,7 +16,13 @@ int YUV420ToWidth_Height(const char* rawFile, const char* saveFile, int width, i
 {
   int static_frame_num = 0;
   int file_size = 0;
-  
+
+  if(save_width >= width || save_height >= height || save_width <= 0 || save_height <= 0)
+  {
+    printf("[ERROR]new width or new height is error!");
+    return -1;
+  }    
+ 
   FILE* rawFp = fopen(rawFile, "rb");
   if(rawFp == NULL)
   {
@@ -95,4 +104,6 @@ FAILED:
   fclose(rawFp);
   fclose(saveFp);
   return -1;
+}
+
 }

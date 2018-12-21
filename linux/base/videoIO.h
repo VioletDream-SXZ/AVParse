@@ -1,6 +1,9 @@
 #ifndef GY_VIDEO_IO_H
 #define GY_VIDEO_IO_H
 
+namespace GY
+{
+
 /**
  * 转换YUV420的分辨率。
  * @param rawFile    :源yuv视频地址。
@@ -15,4 +18,5 @@
  */
 int YUV420ToWidth_Height(const char* rawFile, const char* saveFile, int width, int height, int save_width, int save_height, int frameLen);
 
+}
 #endif // GY_VIDEO_IO_H
