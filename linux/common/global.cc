@@ -226,6 +226,26 @@ double Macroblock4x4::getHadamardMatrixData(int IMODE, int x, int y)
   return this->hadamardMatrix[IMODE][x][y];
 }
 
+void Macroblock4x4::setQuantizationMatrixData(int IMODE, int x, int y, double lf)
+{
+  this->quantizationMatrix[IMODE][x][y] = lf;
+}
+
+double Macroblock4x4::getQuantizationMatrixData(int IMODE, int x, int y)
+{
+  return this->quantizationMatrix[IMODE][x][y];
+}
+
+void Macroblock4x4::setDeQuantizationMatrixData(int IMODE, int x, int y, double lf)
+{
+  this->deQuantizationMatrix[IMODE][x][y] = lf;
+}
+
+double Macroblock4x4::getDeQuantizationMatrixData(int IMODE, int x, int y)
+{
+  return deQuantizationMatrix[IMODE][x][y];
+}
+
 void Macroblock4x4::setCostData(int IMODE, double cost)
 {
   this->cost[IMODE] = cost;

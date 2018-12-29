@@ -84,6 +84,12 @@ public:
   void   setHadamardMatrixData(int IMODE, int x, int y, double lf);
   double getHadamardMatrixData(int IMODE, int x, int y); 
   
+  void   setQuantizationMatrixData(int IMODE, int x, int y, double lf);
+  double getQuantizationMatrixData(int IMODE, int x, int y);
+  
+  void   setDeQuantizationMatrixData(int IMODE, int x, int y, double lf);
+  double getDeQuantizationMatrixData(int IMODE, int x, int y);
+  
   void   setCostData(int IMODE, double cost);
   double getCostData(int IMODE);
   
@@ -110,6 +116,8 @@ private:
   int dctMatrix[10][4][4];
   int cost[15];
   double hadamardMatrix[10][4][4];
+  double quantizationMatrix[10][4][4];
+  double deQuantizationMatrix[10][4][4];
 };
 
 class ImagePicture
