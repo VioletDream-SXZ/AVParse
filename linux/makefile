@@ -1,10 +1,12 @@
-main:main.o x264_structure.o analysis.o
-	g++ -o main main.o x264_structure.o analysis.o
+main:main.o global.o logger.o transformCode.o
+	g++ -o main main.o global.o logger.o transformCode.o
 main.o:
-	g++ -o main.o -c ./example/AnalysisH264.cpp
-x264_structure.o:./base/x264_structure.h ./base/types.h
-	g++ -c ./base/x264_structure.cpp -o x264_structure.o
-analysis.o:./base/analysis.h ./base/types.h
-	g++ -c ./base/analysis.cpp -o analysis.o
+	g++ -c example/loggerexample1.cc -o main.o
+logger.o:logger/logger.h
+	g++ -c logger/logger.cc -o logger.o
+global.o:common/global.h
+	g++ -c common/global.cc -o global.o
+transformCode.o:algorithm/transformCode.h
+	g++ -c algorithm/transformCode.cc -o transformCode.o
 clean:
 	rm -rf *.o
