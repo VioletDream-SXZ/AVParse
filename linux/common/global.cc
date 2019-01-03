@@ -540,8 +540,8 @@ bool ImagePicture::getNextFrame()
   
   uint32_t ret = 0;
   ret += fread(yFrame, 1, width * height, fp);
-  ret += fread(vFrame, 1, width * height / 4, fp);
   ret += fread(uFrame, 1, width * height / 4, fp);
+  ret += fread(vFrame, 1, width * height / 4, fp);
   
   if(ret == 0)
   {
@@ -549,7 +549,10 @@ bool ImagePicture::getNextFrame()
     return false;
   }
   else
+  {
+    gy_log_info(__FILE__, __LINE__, "Read data with %d byte.\n", ret);
     return true;
+  }
 }
 
 bool ImagePicture::getMacroBlock_4x4(int x, int y, Macroblock4x4& m)
@@ -586,6 +589,61 @@ bool ImagePicture::getMacroBlock_16x16(int x, int y, Macroblock16x16& m)
   
   m.setX(x);
   m.setY(y);
+  
+  return true;
+}
+
+bool ImagePicture::setResolutionRate(uint16_t _width, uint16_t _height, std::string newFilePath, int kFrame)
+{
+  if(fp == NULL)
+  {
+    gy_log_error(__FILE__, __LINE__, "Not frame data.\n");
+    return false;
+  }
+  
+  if(_width < 0 || _height < 0 || _width >= width || _height >= height)
+  {
+    gy_log_error(__FILE__, __LINE__, "The resolution rate (%dx%d) is error.\n", _width, _height);
+    return false;
+  }
+  
+  FILE*    new_fp = fopen(newFilePath.c_str(), "wb");
+  uint64_t offset = ftell(fp);
+  
+  byte*    new_yframe = (byte*)calloc(_width * _height, sizeof(byte));
+  byte*    new_uframe = (byte*)calloc(_width * _height / 4, sizeof(byte));
+  byte*    new_vframe = (byte*)calloc(_width * _height / 4, sizeof(byte));
+  
+  for(int k=0; k<kFrame; ++k)
+  {
+    fread(yFrame, 1, width * height, fp);
+    fread(uFrame, 1, width * height / 4, fp);
+    fread(vFrame, 1, width * height / 4, fp);
+    
+    
+    for(int i=0; i<_height; ++i)
+      for(int j=0; j<_width; ++j)
+      {
+        new_yframe[i*_width+j] = yFrame[i*width+j];
+
+        if(!(i&1) && !(j&1))
+        {
+          new_uframe[i*_width/4+j/2] = uFrame[i*width/4+j/2];
+          new_vframe[i*_width/4+j/2] = vFrame[i*width/4+j/2];
+        }
+
+      }
+      
+    fwrite(new_yframe, 1, _width * _height, new_fp);
+    fwrite(new_uframe, 1, _width * _height / 4, new_fp);
+    fwrite(new_vframe, 1, _width * _height / 4, new_fp);
+  }
+      
+  free(new_yframe);
+  free(new_uframe);
+  free(new_vframe);
+  fseek(fp, offset, SEEK_SET);
+  fclose(new_fp);
   
   return true;
 }
@@ -754,6 +812,45 @@ void ImagePicture::getDownLeftMacroBlock(Macroblock16x16& m)
   for(int i=0; i<16; ++i)
     m.down_left[i] = getYFrameData(x+16+i, y-1);
   return;
+}
+
+void ImagePicture::saveFile(std::string Path)
+{
+  FILE* fp = fopen(Path.c_str(), "wb");
+  fwrite(yFrame, 1, width * height, fp);
+  fwrite(uFrame, 1, width * height / 4, fp);
+  fwrite(vFrame, 1, width * height / 4, fp);
+  fclose(fp);
+}
+
+const byte* ImagePicture::getYFrame() const
+{
+  return yFrame;
+}
+
+const byte* ImagePicture::getUFrame() const
+{
+  return uFrame;
+}
+
+const byte* ImagePicture::getVFrame() const
+{
+  return vFrame;
+}
+
+byte* ImagePicture::getYFrame()
+{
+  return yFrame;
+}
+
+byte* ImagePicture::getUFrame()
+{
+  return uFrame;
+}
+
+byte* ImagePicture::getVFrame()
+{
+  return vFrame;
 }
 
 /********************************************

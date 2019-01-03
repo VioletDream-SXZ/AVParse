@@ -134,6 +134,8 @@ public:
 
   bool getMacroBlock_4x4(int x, int y, Macroblock4x4& m);
   bool getMacroBlock_16x16(int x, int y, Macroblock16x16& m);
+  
+  bool setResolutionRate(uint16_t _width, uint16_t _height, std::string newFilePath, int kFrame = 100);
 
   void getUpMacroBlock(Macroblock4x4& m);
   void getUpMacroBlock(Macroblock16x16& m);
@@ -145,7 +147,15 @@ public:
   void getUpRightMacroBlock(Macroblock16x16& m);
   void getDownLeftMacroBlock(Macroblock4x4& m);
   void getDownLeftMacroBlock(Macroblock16x16& m);
+  
+  const byte* getYFrame() const;
+  const byte* getUFrame() const;
+  const byte* getVFrame() const;
+  byte* getYFrame();
+  byte* getUFrame();
+  byte* getVFrame();
 
+  void saveFile(std::string Path);
 private:
   std::string Path;
   FILE* fp;
