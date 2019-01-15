@@ -1,6 +1,60 @@
 #include "aacParse.h"
 #include <stdio.h>
 
+static const char* getSamplingFrequency(const UINT8& index)
+{
+  switch(index)
+  {
+  case 0:
+    return "96000Hz";
+  case 1:
+    return "88200Hz";
+  case 2:
+    return "64000Hz";
+  case 3:
+    return "48000Hz";
+  case 4:
+    return "44100Hz";
+  case 5:
+    return "32000Hz";
+  case 6:
+    return "24000Hz";
+  case 7:
+    return "22050Hz";
+  case 8:
+    return "16000Hz";
+  case 9:
+    return "12000Hz";
+  case 10:
+    return "11025Hz";
+  case 11:
+    return "8000Hz";
+  case 12:
+    return "7350Hz";
+  case 13:
+    return "Reserved";
+  default:
+    return "unkonwn";
+  }
+}
+
+static const char* getProfile(const UINT8& profile)
+{
+  switch(profile)
+  {
+    case 0:
+      return "Main profile";
+    case 1:
+      return "Low Complexity profile";
+    case 2:
+      return "Scalable Sampling Rate profile";
+    case 3:
+      return "reserved";
+    default:
+      return "unkonwn";
+  }
+}
+
 void parseAACData(UINT8* RawData, UINT32 dataLen)
 {
   ADTS_HEADER _header;
@@ -53,8 +107,8 @@ void parseAACData(UINT8* RawData, UINT32 dataLen)
     printf("\tID                      : %u\n", _header.ID);
     printf("\tlayer                   : %u\n", _header.layer);
     printf("\tprotection_absent       : %u\n", _header.protection_absent);
-    printf("\tprofile                 : %u\n", _header.profile);
-    printf("\tsampling_frequency_index: %u\n", _header.sampling_frequency_index);
+    printf("\tprofile                 : %s\n", getProfile(_header.profile));
+    printf("\tsampling_frequency      : %s\n", getSamplingFrequency(_header.sampling_frequency_index));
     printf("\tprivate_bit             : %u\n", _header.private_bit);
     printf("\tchannel_configuration   : %u\n", _header.channel_configuration);
     printf("\toriginal_copy           : %u\n", _header.original_copy);
