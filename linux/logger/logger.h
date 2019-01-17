@@ -8,7 +8,7 @@
 #include <assert.h>
 #include <limits.h>
 
-#define GY_INFO_INFO     "[GY::INFO]"
+#define GY_INFO_INFO     "[GY::INF]"
 #define GY_ERROR_INFO    "[GY::ERROR]"
 #define GY_DEBUG_INFO    "[GY::DEBUG]"
 #define GY_WARNING_INFO  "[GY::WARNING]"

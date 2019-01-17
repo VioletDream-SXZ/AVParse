@@ -1,54 +1,28 @@
 #include "logger.h"
 
 #include <stdio.h>
+#include <stdarg.h>
+#include <string.h>
+#include <unistd.h>
+#include <time.h>
 
+const int MAX_BUF_SIZE = 1024 * 1024;
 static FILE* outFp = stdout;
 
 static void printVaListData(const char* file, const int line, const char* level_info, const char* psz_fmt, va_list args)
 {
-  static char buff[1024 * 1024];
+  static char buff[MAX_BUF_SIZE];
   static int  number = 0;
   
   memset(buff, 0, sizeof(buff));
-  char* point;
-  int   value, len;
-  
-  number = 0;
-  
-  while(psz_fmt != NULL && (*psz_fmt) != '\0')
-  {
-    while(psz_fmt != NULL && (*psz_fmt) != 0 && (*psz_fmt) != '%')
-    {
-      buff[number++] = *psz_fmt;
-      psz_fmt++;
-    }
-    
-    if(*psz_fmt == 0 || psz_fmt == NULL)
-      break;
-    
-    psz_fmt++;
-    
-    switch(*psz_fmt)
-    {
-      case 's':
-        point = va_arg(args, char*);
-        strcpy(buff + number, point);
-        number += strlen(point);
-        break;
-      case 'd':
-        value = va_arg(args, int);
-        len   = sprintf(buff+number, "%d", value);
-        number += len;
-        break;
-      default:
-        buff[number++] = '%';
-        break;
-    }
-    
-    psz_fmt++;
-  }
-  
-  fprintf(outFp, "%s %s-%d: %s", level_info, file, line, buff);
+
+  time_t tt = time(NULL);
+   tm*   tm = localtime(&tt);
+  number += sprintf(buff, "[%04d-%02d-%02d %02d:%02d:%02d]", tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec);
+  number += sprintf(buff + number, "%s[%020s: %04d]: ", level_info, file, line);
+  vsnprintf(buff + number, MAX_BUF_SIZE - number - 1, psz_fmt, args);
+
+  fprintf(outFp, "%s", buff);
 }
 
 void gy_log_internal(const char* file, const int line, const int level, const char* psz_fmt, ...)
