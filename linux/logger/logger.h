@@ -1,6 +1,7 @@
 #ifndef GY_LOGGER_H
 #define GY_LOGGER_H
 
+#include <stdio.h>
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -23,5 +24,8 @@ void gy_log_info(const char* file, const int line, const char* psz_fmt, ...);
 void gy_log_error(const char* file, const int line, const char* psz_fmt, ...);
 void gy_log_debug(const char* file, const int line, const char* psz_fmt, ...);
 void gy_log_warning(const char* file, const int line, const char* psz_fmt, ...);
+
+bool setLogOutputFp(FILE* fp);
+bool setLogOutputFile(const char* str);
 
 #endif // GY_LOGGER_H

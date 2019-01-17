@@ -75,3 +75,28 @@ void gy_log_warning(const char* file, const int line, const char* psz_fmt, ...)
   printVaListData(file, line, GY_WARNING_INFO, psz_fmt, arg);
   va_end(arg);
 }
+
+bool setLogOutputFp(FILE* fp)
+{
+  if(fp == NULL)
+    return false;
+  
+  if(outFp != stdout)
+    fclose(outFp);
+  
+  outFp = fp;
+  return true;
+}
+
+bool setLogOutputFile(const char* str)
+{
+  FILE* fp = fopen(str, "a+");
+  if(fp == NULL)
+    return false;
+  
+  if(outFp != stdout)
+    fclose(outFp);
+  
+  outFp = fp;
+  return true;
+}
