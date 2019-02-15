@@ -17,6 +17,12 @@ const char MEPG2[] = "MEPG-2";
 #define SCALABLE_SAMPLING_RATE_PROFILE 2
 #define RESERVED                       3
 
+typedef enum
+{
+  True  = 1,
+  False = 0,
+}BOOL;
+
 typedef struct adts_header
 {
   UINT16 syncword;                  //12

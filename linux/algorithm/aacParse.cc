@@ -1,6 +1,26 @@
 #include "aacParse.h"
 #include <stdio.h>
 
+static const char ADTSHEADER[] = "ADTS_HEADER:";
+static const char SYNCWORD[]   = "syncword                :";
+static const char ID[]         = "ID                      :";
+static const char LAYER[]      = "layer                   :";
+static const char ABSENT[]     = "protection_absent       :";
+static const char PROFILE[]    = "profile                 :";
+static const char FREQUENCY[]  = "sampling_frequency      :";
+static const char PRIVATE_BIT[]= "private_bit             :";
+static const char CONFIGURE[]  = "channel_configuration   :";
+static const char ORIGINAL[]   = "original_copy           :";
+static const char HOME[]       = "home                    :";
+static const char STREAM[]     = "copyrighted_stream      :";
+static const char START[]      = "copyrighted_start       :";
+static const char LENGTH[]     = "frame_length            :";
+static const char FULLNESS[]   = "buffer_fullness         :";
+static const char NUMBERS[]    = "numbers                 :";
+
+static BOOL   getDataWithUint8Buffer(const UINT8 *buff, UINT32 cur_index, UINT8 *result);
+static UINT32 getNumberByUintBuffer(const UINT8 *buff, UINT32 size);
+
 static const char* getSamplingFrequency(const UINT8& index)
 {
   switch(index)
