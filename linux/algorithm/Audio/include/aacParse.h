@@ -47,5 +47,6 @@ typedef struct adts_header
 typedef uint8_t* AACData;
 
 void parseAACData(UINT8* RawData, UINT32 dataLen);
+void aacParseExample(const char* FILE_PATH_NAME);
 
 #endif // GY_AAC_PARSE_H

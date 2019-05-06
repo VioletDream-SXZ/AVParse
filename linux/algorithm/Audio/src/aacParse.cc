@@ -1,5 +1,9 @@
-#include "aacParse.h"
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#include "aacParse.h"
+#include "audioTool.h"
 
 static const char ADTSHEADER[] = "ADTS_HEADER:";
 static const char SYNCWORD[]   = "syncword                :";
@@ -17,63 +21,6 @@ static const char START[]      = "copyrighted_start       :";
 static const char LENGTH[]     = "frame_length            :";
 static const char FULLNESS[]   = "buffer_fullness         :";
 static const char NUMBERS[]    = "numbers                 :";
-
-static BOOL   getDataWithUint8Buffer(const UINT8 *buff, UINT32 cur_index, UINT8 *result);
-static UINT32 getNumberByUintBuffer(const UINT8 *buff, UINT32 size);
-
-static const char* getSamplingFrequency(const UINT8& index)
-{
-  switch(index)
-  {
-  case 0:
-    return "96000Hz";
-  case 1:
-    return "88200Hz";
-  case 2:
-    return "64000Hz";
-  case 3:
-    return "48000Hz";
-  case 4:
-    return "44100Hz";
-  case 5:
-    return "32000Hz";
-  case 6:
-    return "24000Hz";
-  case 7:
-    return "22050Hz";
-  case 8:
-    return "16000Hz";
-  case 9:
-    return "12000Hz";
-  case 10:
-    return "11025Hz";
-  case 11:
-    return "8000Hz";
-  case 12:
-    return "7350Hz";
-  case 13:
-    return "Reserved";
-  default:
-    return "unkonwn";
-  }
-}
-
-static const char* getProfile(const UINT8& profile)
-{
-  switch(profile)
-  {
-    case 0:
-      return "Main profile";
-    case 1:
-      return "Low Complexity profile";
-    case 2:
-      return "Scalable Sampling Rate profile";
-    case 3:
-      return "reserved";
-    default:
-      return "unkonwn";
-  }
-}
 
 void parseAACData(UINT8* RawData, UINT32 dataLen)
 {
@@ -142,4 +89,25 @@ void parseAACData(UINT8* RawData, UINT32 dataLen)
     cur_index += (_header.frame_length - 7);
     printf("\n");
   }
+}
+
+void aacParseExample(const char* FILE_PATH_NAME)
+{
+  FILE* fp = fopen(FILE_PATH_NAME, "rb");
+  
+  uint8_t* buffer;
+  size_t size;
+  buffer = (uint8_t*)calloc(1024 * 1024 * 5, sizeof(uint8_t));
+  
+  // get file size
+  fseek(fp, 0, SEEK_END);
+  size = ftell(fp);
+  fseek(fp, 0, SEEK_SET);
+  
+  // read file data
+  int ret = fread(buffer, 1, size, fp);
+  fclose(fp);
+ 
+  // start
+  parseAACData(buffer, (uint32_t)size);
 }

@@ -1,14 +1,35 @@
-main:main.o global.o logger.o transformCode.o quantization.o
-	g++ -o main main.o global.o logger.o transformCode.o quantization.o
+## Audio Parse Algorithm
+AUDIOINCLUDE = algorithm/Audio/include
+AUDIOSRC     = algorithm/Audio/src
+
+## Logger
+LOGGER = logger
+
+## Common
+COMMON = common
+
+## Example
+EXAMPLE = example
+
+## Main Include And Linked File
+ALLFILE    = DataStructor.o aExample.o \
+             audioTool.o aacParse.o wavParse.o
+ALLINCLUDE = -I $(AUDIOINCLUDE) -I $(COMMON)
+
+main:main.o $(ALLFILE)
+	gcc -o main main.o $(ALLFILE) $(ALLINCLUDE)
 main.o:
-	g++ -c example/loggerexample1.cc -o main.o
-logger.o:logger/logger.h
-	g++ -c logger/logger.cc -o logger.o
-global.o:common/global.h
-	g++ -c common/global.cc -o global.o
-transformCode.o:algorithm/transformCode.h
-	g++ -c algorithm/transformCode.cc -o transformCode.o
-quantization.o:algorithm/quantization.h
-	g++ -c algorithm/quantization.cc -o quantization.o
+	g++ -c $(EXAMPLE)/main.cc -o main.o $(ALLINCLUDE)
+DataStructor.o:
+	g++ -c $(COMMON)/DataStructor.cc -o DataStructor.o
+aExample.o:
+	g++ -c $(EXAMPLE)/example.cc -o aExample.o $(ALLINCLUDE)
+
+aacParse.o:
+	g++ -c $(AUDIOSRC)/aacParse.cc -o aacParse.o -I $(AUDIOINCLUDE)
+wavParse.o:
+	g++ -c $(AUDIOSRC)/wavParse.cc -o wavParse.o -I $(AUDIOINCLUDE)
+audioTool.o:
+	g++ -c $(AUDIOSRC)/audioTool.cc -o audioTool.o -I $(AUDIOINCLUDE)
 clean:
 	rm -rf *.o
