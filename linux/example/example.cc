@@ -2,6 +2,11 @@
 
 #include "aacParse.h"
 #include "wavParse.h"
+#include "oggParse.h"
+
+#include "pcmEncoder.h"
+
+#include "decoderExample.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -18,6 +23,15 @@ void gyMain(GY::DataSource* source)
       break;
     case Configure::WAC_PARSE_OP:
       wavParseExample(PATH_NAME);
+      break;
+    case Configure::OGG_PARSE_OP:
+      oggParseExample(PATH_NAME);
+      break;
+    case Configure::PCM_ENCODER_OP:
+      pcmEncoderExample(source->_argv[2], source->_argv[3]);
+      break;
+    case Configure::AAC_ADTS_DECODER_OP:
+      aacAdtsDecoderExample(source->_argv[2], source->_argv[3]);
       break;
     default:
       break;

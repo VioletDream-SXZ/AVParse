@@ -91,6 +91,16 @@ void parseAACData(UINT8* RawData, UINT32 dataLen)
   }
 }
 
+uint32_t getAacAudioLength(uint8_t * rawData, uint32_t dataLen)
+{
+  uint32_t length = 0;
+  length = ( ( rawData[3] & 0x03 ) << 1 ) + 
+           ( ( rawData[4] ) << 3 ) + 
+           ( ( rawData[5] & 0xe0 ) >> 5 );
+
+  return length;
+}
+
 void aacParseExample(const char* FILE_PATH_NAME)
 {
   FILE* fp = fopen(FILE_PATH_NAME, "rb");

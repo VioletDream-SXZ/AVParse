@@ -30,6 +30,8 @@ typedef struct wav_list
   WAV_NODE* _list_cur;
 }WAV_LIST;
 
+typedef unsigned char WAV_CHAR;
+
 typedef struct wav_header
 {
   char     _chunk_id[5];
@@ -49,7 +51,10 @@ typedef struct wav_header
   uint32_t _sub_chunk_2_size;
 
   WAV_LIST* _list;
+  WAV_CHAR* _data;
 }WAV_HEADER;
+
+void freeWavHeader(WAV_HEADER* header);
 
 WAV_NODE* allocWavListNode(const uint8_t* nodeName, int nodeLength, const uint8_t* nodeData);
 void initWavListNode(WAV_NODE* node);
@@ -62,7 +67,7 @@ void wavListAdd(WAV_LIST** list, const uint8_t* nodeName, int nodeLength, const 
 WAV_LIST_NODE_DATA wavListCurData(WAV_LIST* list);
 bool wavListNext(WAV_LIST* list);
 
-void parseWAVData(uint8_t* wavData, uint32_t dataLen);
+WAV_HEADER* parseWAVData(uint8_t* wavData, uint32_t dataLen);
 void wavParseExample(const char* PATH_NAME);
 
 #endif // CJR_WAV_PARSE_H

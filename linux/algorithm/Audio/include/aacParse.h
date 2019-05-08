@@ -49,4 +49,6 @@ typedef uint8_t* AACData;
 void parseAACData(UINT8* RawData, UINT32 dataLen);
 void aacParseExample(const char* FILE_PATH_NAME);
 
+uint32_t getAacAudioLength(uint8_t * rawData, uint32_t dataLen);
+
 #endif // GY_AAC_PARSE_H

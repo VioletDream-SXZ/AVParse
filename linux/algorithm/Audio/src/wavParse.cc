@@ -22,9 +22,13 @@ static const char INFO[]          = "Info           ";
 
 static void DisplayWavHeader(WAV_HEADER* header);
 
-void parseWAVData(uint8_t* wavData, uint32_t dataLen)
+WAV_HEADER* parseWAVData(uint8_t* wavData, uint32_t dataLen)
 {
-  WAV_HEADER _header;
+  WAV_HEADER* _res_header = static_cast<WAV_HEADER*>(malloc(sizeof(WAV_HEADER)));
+  _res_header->_data = NULL;
+  _res_header->_list = NULL;
+
+  WAV_HEADER  _header = *_res_header;
 
   uint32_t cur_index = 0;
 
@@ -126,10 +130,15 @@ void parseWAVData(uint8_t* wavData, uint32_t dataLen)
 
     _header._sub_chunk_2_size = GET_UINT32_FROM_ARRAY(wavData, cur_index);
     cur_index += 4;
-  
+
+    _header._data = (WAV_CHAR*) malloc ( sizeof(char) * _header._sub_chunk_2_size );
+    memcpy(_header._data, wavData + cur_index, _header._sub_chunk_2_size);
+
     DisplayWavHeader(&_header);
     break;
   }
+
+  return _res_header;
 }
 
 void DisplayWavHeader(WAV_HEADER* header)
@@ -165,6 +174,18 @@ void DisplayWavHeader(WAV_HEADER* header)
   printf("\t%s: %d.\n", SUBCHUNKSIZE2, header->_sub_chunk_2_size);
 
   return;
+}
+
+void freeWavHeader(WAV_HEADER* header)
+{
+  if( header->_list != NULL)
+    freeWavList( header->_list );
+
+  if( header->_data != NULL )
+    free( header->_data = NULL );
+
+  header->_list = NULL;
+  header->_data = NULL;
 }
 
 WAV_NODE* allocWavListNode(const uint8_t* nodeName, int nodeLength, const uint8_t* nodeData)
@@ -295,5 +316,6 @@ void wavParseExample(const char* FILE_PATH_NAME)
   fclose(fp);
  
   // start
-  parseWAVData(buffer, (uint32_t)size);
+  WAV_HEADER* header = parseWAVData(buffer, (uint32_t)size);
+  freeWavHeader( header );
 }
