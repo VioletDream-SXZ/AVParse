@@ -19,10 +19,10 @@ static void printVaListData(const char* file, const int line, const char* level_
   time_t tt = time(NULL);
    tm*   tm = localtime(&tt);
   number += sprintf(buff, "[%04d-%02d-%02d %02d:%02d:%02d]", tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec);
-  number += sprintf(buff + number, "%s[%020s: %04d]: ", level_info, file, line);
+  number += sprintf(buff + number, "%s[%s: %04d]: ", level_info, file, line);
   vsnprintf(buff + number, MAX_BUF_SIZE - number - 1, psz_fmt, args);
 
-  fprintf(outFp, "%s", buff);
+  fprintf(outFp, "%s\n", buff);
 }
 
 void gy_log_internal(const char* file, const int line, const int level, const char* psz_fmt, ...)

@@ -1,0 +1,1 @@
+int gy_log2_c(unsigned int v);

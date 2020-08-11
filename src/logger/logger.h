@@ -28,4 +28,7 @@ void gy_log_warning(const char* file, const int line, const char* psz_fmt, ...);
 bool setLogOutputFp(FILE* fp);
 bool setLogOutputFile(const char* str);
 
+#define GYLOGI(format,...) gy_log_info(__FUNCTION__,__LINE__,format,__VA_ARGS__)
+#define GYLOGE(format,...) gy_log_error(__FUNCTION__,__LINE__,format,__VA_ARGS__)
+
 #endif // GY_LOGGER_H
